@@ -1,0 +1,38 @@
+#!/usr/bin/env ruby
+
+$LOAD_PATH.unshift(File.dirname(File.realpath(__FILE__)) + '/../lib')
+
+require 'plotit'
+require 'sqlite3'
+
+query = ARGV[0]
+
+# puts query
+
+rows = []
+STDIN.each_line do |line|
+  c = line.strip.chomp.split("\t")
+
+  # c[0] = DateTime.parse(c[0]).strftime('%Y-%m-%d %H:%M:%S')
+
+  rows << c
+end
+
+columns_names = rows.first.size.times.map { |i| "column#{i}" }
+
+def exec(db, sql)
+  # puts sql
+  db.execute sql
+end
+
+SQLite3::Database.new( ":memory:" ) do |db|
+  exec db, "create table t1(#{columns_names.join(', ')});"
+
+  rows.each do |row|
+    db.execute "insert into t1(#{columns_names.join(', ')}) values(#{row.size.times.map {'?'}.join(', ')})", row
+  end
+
+  db.execute(query) do |row|
+    puts row.join("\t")
+  end
+end

@@ -1,0 +1,10 @@
+Name0	69	70
+Name1	9	80
+Name2	28	18
+Name3	71	23
+Name4	59	9
+Name5	40	61
+Name6	59	9
+Name7	85	13
+Name8	11	83
+Name9	80	36
