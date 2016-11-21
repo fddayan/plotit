@@ -1,0 +1,29 @@
+#!/usr/bin/env ruby
+
+$LOAD_PATH.unshift(File.dirname(File.realpath(__FILE__)) + '/../lib')
+
+require 'plotit'
+require 'slop'
+
+opts = Slop.parse do |o|
+  o.string '-l', '--layout', 'The layout (date_string_number, string_number, string, date_string)'
+  o.boolean '-h', '--headers', 'The text has headers'
+  o.string '-f','--file', 'The filename'
+  o.string '-c','--chart', '(timeline, '
+  o.on '--version', 'print the version' do
+    puts Potit::VERSION
+    exit
+  end
+end
+
+# puts "Layout is requird" ; exit unless opts[:chart].present?
+# puts "Layout is requird" ; exit unless opts[:layout].present?
+
+puts opts.to_hash
+
+Plotit::Cli.new().plotit(STDIN, {
+  chart_type: opts[:chart].to_sym,
+  filename: opts[:file] || 'output.png',
+  headers: opts[:headers]
+})
+

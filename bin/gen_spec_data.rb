@@ -35,5 +35,25 @@ write_to 'bar_multi_lines.txt' do |f|
   end
 end
 
+write_to 'date_counts.txt' do |f|
+  now = Time.now
+  10.times do |n|
+    l = now + (1.seconds * n)
+    f.write("#{l}\t#{rand(100)}\n")
+  end
+end
+
+write_to 'name_ips.txt' do |f|
+  10.times do |n|
+    f.write("Name#{rand(3)}\tt184.75.214.42\n")
+  end
+end
+
+write_to 'name_counts.txt' do |f|
+  10.times do |n|
+    f.write("Name#{rand(3)}\t#{rand(100)}\n")
+  end
+end
+
 
 

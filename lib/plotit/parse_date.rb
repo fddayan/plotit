@@ -22,12 +22,23 @@ require 'chronic'
 module Plotit
   module ParseDate
 
+    DATE_FORMAT = '%Y-%m-%d %H:%M:%S'
+
+    def self.short_format(date)
+      date.strftime('%d/%m/%y %H:%M:%S')
+    end
+
     def self.date?(date_string)
       parse(date_string) && true rescue false
     end
 
-    def self.truncate(date, to = 'minutes')
-       "#{date.year}-#{date.month}-#{date.day} #{date.hour}:#{date.minute}"
+    def self.truncate(date, to = :hour)
+      if to.nil?
+        date.strftime(DATE_FORMAT)
+      else
+        date.change(to.to_sym => 0).strftime(DATE_FORMAT)
+      end
+       # "#{date.year}-#{date.month}-#{date.day} #{date.hour}:#{date.minute}"
     end
 
     # Parse a date of unknown format.

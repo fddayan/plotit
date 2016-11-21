@@ -1,8 +1,0 @@
-#!/usr/bin/env ruby
-
-$LOAD_PATH.unshift(File.dirname(File.realpath(__FILE__)) + '/../lib')
-
-require 'plotit'
-
-Plotit::Cli.new(filename: ARGV[0]).run(STDIN)
-

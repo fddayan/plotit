@@ -1,0 +1,33 @@
+#!/usr/bin/env ruby
+
+$LOAD_PATH.unshift(File.dirname(File.realpath(__FILE__)) + '/../lib')
+
+require 'plotit'
+require 'slop'
+
+opts = Slop.parse do |o|
+  o.string '-l', '--layout', 'The layout (date_string_number, string_number, string, date_string)'
+  o.string '-f', '--formula', 'The formula (count, avg, sum)'
+  o.string '-t', '--truncate', 'Truncate date at (sec, min, hour, day, month, year)'
+
+  o.on '--version', 'print the version' do
+    puts Potit::VERSION
+    exit
+  end
+end
+
+# formula = ARGV[0] || :count
+# truncate_date = ARGV[1]
+
+# rows = []
+# STDIN.each_line do |line|
+#   c = line.strip.chomp.split("\t")
+#   rows << c
+# end
+
+# puts ARGV
+# puts opts.to_hash
+
+raise "selecte layout" unless opts[:layout].present?
+
+Plotit::Cli.new({}).groupped(STDIN, STDOUT, opts[:layout], opts[:formula] || :count, opts[:truncate])
