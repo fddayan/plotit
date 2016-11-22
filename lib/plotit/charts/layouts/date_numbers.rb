@@ -25,18 +25,18 @@ module Plotit
         def add_line(line)
           @rows += 1
           columns = line.strip.chomp.split(delimiter)
-          if @rows == 1
-            if @has_header
+          if @rows == 1 && @has_header
               columns.shift #remove first
               @headers = columns
-            else
+          else
+            if @rows == 1
               @headers = (columns.size - 1).times.map { |n| "Legend#{n}" }
             end
-          else
+
             x_key = Plotit::ParseDate.parse(columns.shift)
             # add_columns x_key, columns
 
-            @data << {date: x_key}.merge(headers_value_hash(@headers, columns))
+            @data << { date: x_key }.merge(headers_value_hash(@headers, columns))
           end
         end
 

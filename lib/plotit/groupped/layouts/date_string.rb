@@ -2,25 +2,17 @@ require 'set'
 module Plotit
   class Groupped
     module Layouts
-      class DateString
+      class DateString < Plotit::Groupped::Layouts::Base
 
-        attr_reader :formula, :rows, :headers
+        attr_reader :headers
 
         def initialize(options)
-          @rows = {}
+          super(options)
+
           @formula = options[:formula].to_sym
           @truncate = options[:truncate]
           @rows_count_by_group = {}
           @headers = Set.new
-        end
-
-        def add_row(columns)
-          date_key = Plotit::ParseDate.truncate(Plotit::ParseDate.parse(columns.first), @truncate)
-          legend_key = columns.second
-
-          set_row date_key, legend_key, 0
-
-          run_forumla date_key, legend_key, columns
         end
 
         def set_row(k1, k2, value)
@@ -42,6 +34,18 @@ module Plotit
 
         def fixed_values(values)
           @headers.map { |h| values[h] || 0 }
+        end
+
+        #######################
+        #     Contract
+        #######################
+        def add_row(columns)
+          date_key = Plotit::ParseDate.truncate(Plotit::ParseDate.parse(columns.first), @truncate)
+          legend_key = columns.second
+
+          set_row date_key, legend_key, 0
+
+          run_forumla date_key, legend_key, columns
         end
 
         def completed

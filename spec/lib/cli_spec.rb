@@ -6,12 +6,12 @@ describe Plotit::Cli do
 
   describe '#plotit' do
     describe 'with date in first column' do
-      it 'should create timeline chart ' do
-        run_plotit_type! :timeline, :timeline
-      end
+      # it 'should create timeline chart ' do
+      #   run_plotit_type! :timeline, :timeline
+      # end
 
       it 'with many more column should create timeline' do
-        run_plotit_type! :timeline_multi_lines, :timeline
+        run_plotit_type! :date_numbers_with_headers, :timeline, { headers: true }
       end
     end
 
@@ -30,15 +30,15 @@ describe Plotit::Cli do
 
     context 'with date ' do
       it 'should count' do
-        run_groupped! :date_ips, :date_string, :count
+        run_groupped! :date_string, :date_string, :count
       end
 
-      pending 'should calc average' do
-        run_groupped! :date_counts, :date_number, :avg
+      it 'should calc average' do
+        run_groupped! :date_number, :date_number, :avg
       end
 
-      pending 'should sum' do
-        run_groupped! :date_counts, :date_number, :sum
+      it 'should sum' do
+        run_groupped! :date_number, :date_number, :sum
       end
     end
 
@@ -62,18 +62,18 @@ describe Plotit::Cli do
   ####################################
 
   def run_groupped!(file, layout, formula)
-    file = "./spec/fixtures/#{file}.txt"
+    file = "./spec/fixtures/groupped/#{file}.txt"
     lines = File.read(file)
     Plotit::Cli.new(filename: '').groupped(lines, STDOUT, layout, formula, :min)
   end
 
-  def run_plotit_type!(type, chart_type)
-    run_plotit! "./spec/fixtures/#{type}.txt", "#{output_folder}/#{type}.png", chart_type
+  def run_plotit_type!(type, chart_type, options = {})
+    run_plotit! "./spec/fixtures/chart/#{type}.txt", "#{output_folder}/#{type}.png", chart_type, options
   end
 
-  def run_plotit!(file, output_file, chart_type)
+  def run_plotit!(file, output_file, chart_type, options = {})
     lines = File.read(file)
-    Plotit::Cli.new().plotit(lines, {chart_type:chart_type,  filename: output_file })
+    Plotit::Cli.new().plotit(lines, options.merge({ chart_type:chart_type,  filename: output_file }))
 
     `open #{output_file}`
   end
