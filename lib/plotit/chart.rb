@@ -8,6 +8,7 @@ module Plotit
     def set_chart(chart_type)
       @chart = case chart_type.to_sym
       when :timeline then Plotit::Charts::Layouts::DateNumbers.new(@options)
+      when :bar then Plotit::Charts::Layouts::StringNumber.new(@options)
       end
     end
 
@@ -16,7 +17,7 @@ module Plotit
     end
 
     def plot
-      @chart.plot
+      @chart.plot_to(@options[:output_path])
     end
   end
 end

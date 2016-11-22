@@ -52,6 +52,15 @@ module Plotit
           # end
         end
 
+        def row_result
+          [].tap do |arr|
+            arr << [['date'] + headers.to_a]
+            @rows.map do |row, value|
+              arr << [[row] + fixed_values(value)]
+            end
+          end
+        end
+
         def inc_count(k1, k2)
           @rows_count_by_group[k1] ||= {}
           @rows_count_by_group[k1][k2] ||= 0

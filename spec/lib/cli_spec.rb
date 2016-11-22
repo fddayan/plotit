@@ -7,53 +7,52 @@ describe Plotit::Cli do
   describe '#plotit' do
     describe 'with date in first column' do
       it 'should create timeline chart ' do
-        run_plotit_type! :timeline
+        run_plotit_type! :timeline, :timeline
       end
 
       it 'with many more column should create timeline' do
-        run_plotit_type! :timeline_multi_lines
+        run_plotit_type! :timeline_multi_lines, :timeline
       end
     end
 
     describe 'with string in first column' do
       it 'with one more column should create barcart' do
-        run_plotit_type! :bar
+        run_plotit_type! :bar, :bar
       end
 
       it 'with many more column should create barcart' do
-        run_plotit_type! :bar_multi_lines
+        run_plotit_type! :bar_multi_lines, :bar
       end
     end
   end
-
 
   describe "#groupped" do
 
     context 'with date ' do
       it 'should count' do
-        run_groupped! :date_ips, :count
+        run_groupped! :date_ips, :date_string, :count
       end
 
-      it 'should calc average' do
-        run_groupped! :date_counts, :avg
+      pending 'should calc average' do
+        run_groupped! :date_counts, :date_number, :avg
       end
 
-      it 'should sum' do
-        run_groupped! :date_counts, :sum
+      pending 'should sum' do
+        run_groupped! :date_counts, :date_number, :sum
       end
     end
 
     context 'with name ' do
-      it 'should count' do
-        run_groupped! :name_ips, :count
+      pending 'should count' do
+        run_groupped! :name_ips, :string_string, :count
       end
 
-      it 'should calc average' do
-        run_groupped! :name_counts, :avg
+      pending 'should calc average' do
+        run_groupped! :name_counts, :string_number, :avg
       end
 
-      it 'should sum' do
-        run_groupped! :name_counts, :sum
+      pending 'should sum' do
+        run_groupped! :name_counts, :string_number, :sum
       end
     end
   end
@@ -62,19 +61,19 @@ describe Plotit::Cli do
   #           HELPERS
   ####################################
 
-  def run_groupped!(file, formula)
+  def run_groupped!(file, layout, formula)
     file = "./spec/fixtures/#{file}.txt"
     lines = File.read(file)
-    Plotit::Cli.new(filename: '').groupped(lines, STDOUT, formula)
+    Plotit::Cli.new(filename: '').groupped(lines, STDOUT, layout, formula, :min)
   end
 
-  def run_plotit_type!(type)
-    run_plotit! "./spec/fixtures/#{type}.txt", "#{output_folder}/#{type}.png"
+  def run_plotit_type!(type, chart_type)
+    run_plotit! "./spec/fixtures/#{type}.txt", "#{output_folder}/#{type}.png", chart_type
   end
 
-  def run_plotit!(file, output_file)
+  def run_plotit!(file, output_file, chart_type)
     lines = File.read(file)
-    Plotit::Cli.new(filename: output_file).plotit(lines)
+    Plotit::Cli.new().plotit(lines, {chart_type:chart_type,  filename: output_file })
 
     `open #{output_file}`
   end

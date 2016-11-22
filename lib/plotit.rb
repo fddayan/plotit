@@ -8,6 +8,7 @@ require 'plotit/groupped'
 require 'plotit/groupped/layouts/date_string'
 require 'plotit/groupped/layouts/string'
 require 'plotit/charts/layouts/date_numbers'
+require 'plotit/charts/layouts/string_number'
 require 'plotit/chart'
 require 'plotit/cli'
 

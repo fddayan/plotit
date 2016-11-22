@@ -8,6 +8,8 @@ module Plotit
     end
 
     def plotit(input, options)
+      raise ":chart_type is required" unless options[:chart_type]
+
       filename = options[:filename] || 'out.png'
       output_path = "#{Dir.pwd}/#{filename}"
 

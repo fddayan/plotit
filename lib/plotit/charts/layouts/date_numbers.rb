@@ -25,9 +25,13 @@ module Plotit
         def add_line(line)
           @rows += 1
           columns = line.strip.chomp.split(delimiter)
-          if @has_header && @rows == 1
-            columns.shift #remove first
-            @headers = columns
+          if @rows == 1
+            if @has_header
+              columns.shift #remove first
+              @headers = columns
+            else
+              @headers = (columns.size - 1).times.map { |n| "Legend#{n}" }
+            end
           else
             x_key = Plotit::ParseDate.parse(columns.shift)
             # add_columns x_key, columns
@@ -102,9 +106,9 @@ module Plotit
           end
         end
 
-        def plot
+        def plot_to(output_path)
           # puts @data
-          guff.write(@output_path)
+          guff.write(output_path)
         end
       end
     end

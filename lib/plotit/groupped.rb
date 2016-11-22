@@ -12,6 +12,8 @@ module Plotit
       @layout = case layout.to_sym
       when :date_string then Plotit::Groupped::Layouts::DateString.new(formula: @formula, truncate: @truncate_date)
       when :string then Plotit::Groupped::Layouts::String.new(formula: @formula, truncate: @truncate_date)
+      else
+        raise "layout #{layout} not found"
       end
     end
 
