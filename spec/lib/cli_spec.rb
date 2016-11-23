@@ -29,30 +29,34 @@ describe Plotit::Cli do
   describe "#groupped" do
 
     context 'with date ' do
-      it 'should count' do
+      it 'date_string should count' do
         run_groupped! :date_string, :date_string, :count
       end
 
-      it 'should calc average' do
+      it 'date_number should calc average' do
         run_groupped! :date_number, :date_number, :avg
       end
 
-      it 'should sum' do
+      it 'date_number should sum' do
         run_groupped! :date_number, :date_number, :sum
       end
     end
 
     context 'with name ' do
-      pending 'should count' do
-        run_groupped! :name_ips, :string_string, :count
+      it 'string_string should pivot and count' do
+        run_groupped! :string_string, :string_string, :count
       end
 
-      pending 'should calc average' do
-        run_groupped! :name_counts, :string_number, :avg
+      it 'string_number should calc average' do
+        run_groupped! :string_number, :string_number, :avg
       end
 
-      pending 'should sum' do
-        run_groupped! :name_counts, :string_number, :sum
+      it 'string_number should sum' do
+        run_groupped! :string_number, :string_number, :sum
+      end
+
+      it 'string should count' do
+        run_groupped! :string, :string, :sum
       end
     end
   end

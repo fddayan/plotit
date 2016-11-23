@@ -10,6 +10,10 @@ module Plotit
           @formula = options[:formula].to_sym
         end
 
+        def row_result
+          rows
+        end
+
       end
     end
   end

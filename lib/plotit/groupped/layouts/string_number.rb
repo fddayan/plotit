@@ -1,14 +1,14 @@
-# 2016-11-18 20:48:26 -0300 34
-# 2016-11-18 20:48:27 -0300 48
-# 2016-11-18 20:48:28 -0300 11
-# 2016-11-18 20:48:29 -0300 36
+# Name2 t184.75.214.42
+# Name0 t184.75.214.42
+# Name2 t184.75.214.42
+# Name0 t184.75.214.42
+# Name0 t184.75.214.42
 
 module Plotit
   class Groupped
     module Layouts
-      class DateNumber < Plotit::Groupped::Layouts::Base
+      class StringNumber < Plotit::Groupped::Layouts::Base
         include Plotit::Groupped::Layouts::Formula
-        include Plotit::Groupped::Layouts::DateUtils
 
         def initialize(options)
           super(options)
@@ -17,7 +17,7 @@ module Plotit
         end
 
         def build_keys(columns)
-          [build_date_key(columns.first), columns.second]
+          [columns.first, columns.second]
         end
 
       end

@@ -1,5 +1,3 @@
-require 'set'
-
 module Plotit
   class Groupped
     module Layouts

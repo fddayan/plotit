@@ -1,5 +1,20 @@
+require 'plotit/groupped/layouts/base'
+require 'plotit/groupped/layouts/pivot'
+require 'plotit/groupped/layouts/formula'
+require 'plotit/groupped/layouts/date_utils'
+
+%w(date_string date_number string_number string string_string).each do |layout|
+  require "plotit/groupped/layouts/#{layout}"
+end
+
 module Plotit
   class Groupped
+
+    LAYOUTS = {
+      date_string: Plotit::Groupped::Layouts::DateString,
+      string: Plotit::Groupped::Layouts::String,
+      string_number: Plotit::Groupped::Layouts::StringNumber
+    }
 
     attr_reader :formula, :truncate_date
 
@@ -10,12 +25,25 @@ module Plotit
 
     def set_layout(layout)
       @layout = case layout.to_sym
-      when :date_string then Plotit::Groupped::Layouts::DateString.new(formula: @formula, truncate: @truncate_date)
-      when :string then Plotit::Groupped::Layouts::String.new(formula: @formula, truncate: @truncate_date)
-      when :date_number then Plotit::Groupped::Layouts::DateNumber.new(formula: @formula, truncate: @truncate_date)
+      when :date_string
+        Plotit::Groupped::Layouts::DateString.new(formula: @formula, truncate: @truncate_date)
+      when :string
+        Plotit::Groupped::Layouts::String.new(formula: @formula, truncate: @truncate_date)
+      when :date_number
+        Plotit::Groupped::Layouts::DateNumber.new(formula: @formula, truncate: @truncate_date)
+      when :string_number
+        Plotit::Groupped::Layouts::StringNumber.new(formula: @formula, truncate: @truncate_date)
+      when :string_string
+        Plotit::Groupped::Layouts::StringString.new(formula: @formula, truncate: @truncate_date)
       else
         raise "layout #{layout} not found"
       end
+
+      # if LAYOUTS.key?(layout.to_sym)
+      #   LAYOUTS[layout.to_sym].new(formula: @formula, truncate: @truncate_date)
+      # else
+      #   raise "layout #{layout} not found"
+      # end
     end
 
     def rows
