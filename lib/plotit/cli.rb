@@ -54,7 +54,7 @@ module Plotit
     end
 
 
-    def groupped(lines, out, layout, formula, truncate_date)
+    def groupped(lines, out, layout, formula, truncate_date, is_table = false)
       g = Plotit::Groupped.new(formula: formula.to_sym, truncate_date: truncate_date)
 
       g.set_layout(layout)
@@ -73,8 +73,17 @@ module Plotit
       #   out.write "#{row}\t#{g.fixed_values(value).join("\t")}\n"
       # end
 
-      g.row_result.each do |columns|
-        out.write "#{columns.join("\t")}\n" #{}"#{row}\t#{g.fixed_values(value).join("\t")}\n"
+      if is_table
+        table = Terminal::Table.new do |t|
+          g.row_result.each do |columns|
+            t << columns
+          end
+        end
+        out.write "#{table}"
+      else
+        g.row_result.each do |columns|
+          out.write "#{columns.join("\t")}\n" #{}"#{row}\t#{g.fixed_values(value).join("\t")}\n"
+        end
       end
     end
 

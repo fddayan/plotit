@@ -8,15 +8,19 @@ module Plotit
         def build_keys(columns)
         end
 
-        def inc_row(key1, key2)
+        def inc_row(key1, key2, value = 1)
           @rows[key1] ||= {}
           @rows[key1][key2] ||= 0
-          @rows[key1][key2] += 1
+          @rows[key1][key2] += value.to_f
           headers << key2
         end
 
         def add_row(columns)
-          inc_row *build_keys(columns)
+          inc_row *build_keys(columns), value_column(columns)
+        end
+
+        def value_column(columns)
+          columns[2] || 1
         end
 
         def headers
@@ -29,9 +33,9 @@ module Plotit
 
         def row_result
           [].tap do |arr|
-            arr << [['legend'] + headers.to_a]
+            arr << (['legend'] + headers.to_a)
             rows.map do |row, value|
-              arr << [[row] + fixed_values(value)]
+              arr << [row] + fixed_values(value)
             end
           end
         end
@@ -39,7 +43,6 @@ module Plotit
         def completed
 
         end
-
 
       end
     end

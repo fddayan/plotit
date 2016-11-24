@@ -1,4 +1,5 @@
 require 'active_support/all'
+require 'terminal-table'
 
 require 'plotit/version'
 require 'plotit/parse_date'

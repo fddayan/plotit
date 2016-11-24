@@ -41,5 +41,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency "gruff", "~> 0.7.0"
   spec.add_dependency "sqlite3", "~> 1.3.11"
   spec.add_dependency 'slop','~>4.2.1'
+  spec.add_dependency 'terminal-table','~> 1.5.2'
+
 
 end

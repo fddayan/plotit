@@ -59,6 +59,18 @@ describe Plotit::Cli do
         run_groupped! :string, :string, :sum
       end
     end
+
+    context 'string_string_number' do
+      it 'should group by string column, pivot and run formula on number' do
+        run_groupped! :string_string_number, :string_string, :counts
+      end
+    end
+
+    context 'date_string_number' do
+      it 'should group by date truncated, pivot and run formula on number' do
+        run_groupped! :date_string_number, :date_string, :counts
+      end
+    end
   end
 
   ####################################
