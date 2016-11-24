@@ -1,0 +1,28 @@
+#!/usr/bin/env ruby
+
+$LOAD_PATH.unshift(File.dirname(File.realpath(__FILE__)) + '/../lib')
+
+require 'plotit'
+require 'slop'
+
+
+opts = Slop.parse do |o|
+  o.array '-p', '--print', 'order of number of captured group to print (2,1,3)'
+  o.on '--version', 'print the version' do
+    puts Potit::VERSION
+    exit
+  end
+end
+
+# puts opts.to_hash
+# puts "REGEX: #{opts.arguments}"
+regex = /#{opts.arguments.first}/
+
+# puts opts.arguments
+puts regex
+STDIN.each_line do |line|
+  # puts line
+  c = regex.match(line.strip.chomp)
+  puts "#{c.captures.join("\t")}\n" if c
+  # STDOUT.write regex.match(line.strip.chomp) #.captures.join("\t") + "\n"
+end
