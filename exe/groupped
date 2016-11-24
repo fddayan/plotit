@@ -9,6 +9,9 @@ opts = Slop.parse do |o|
   o.string '-l', '--layout', 'The layout (date_string_number, string_number, string, date_string)'
   o.string '-f', '--formula', 'The formula (count, avg, sum)'
   o.string '-t', '--truncate', 'Truncate date at (sec, min, hour, day, month, year)'
+  o.integer '-s', '--sort', 'Sort by column position'
+  o.string '--sort-dir', 'Sort direction', default: 'desc'
+  o.string '--output-format', 'Output format (text, table)', default: 'text'
 
   o.on '--version', 'print the version' do
     puts Potit::VERSION
@@ -16,18 +19,6 @@ opts = Slop.parse do |o|
   end
 end
 
-# formula = ARGV[0] || :count
-# truncate_date = ARGV[1]
-
-# rows = []
-# STDIN.each_line do |line|
-#   c = line.strip.chomp.split("\t")
-#   rows << c
-# end
-
-# puts ARGV
-# puts opts.to_hash
-
 raise "selecte layout" unless opts[:layout].present?
 
-Plotit::Cli.new({}).groupped(STDIN, STDOUT, opts[:layout], opts[:formula] || :count, opts[:truncate])
+Plotit::Cli.new({}).groupped(STDIN, STDOUT, opts.to_hash)

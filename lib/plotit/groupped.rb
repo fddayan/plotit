@@ -60,8 +60,17 @@ module Plotit
       @layout.add_row(columns)
     end
 
-    def row_result
-      @layout.row_result
+    def row_result(options = {})
+      @layout.row_result(options).to_a.tap do |arr|
+        if options[:sort_by].present?
+          column_idx = options[:sort_by].abs - 1
+          if options[:sort_dir] == 'desc'
+            arr.sort! { |a, b| b[column_idx] <=> a[column_idx] }
+          else
+            arr.sort! { |a, b| a[column_idx] <=> b[column_idx] }
+          end
+        end
+      end
     end
 
     # def headers

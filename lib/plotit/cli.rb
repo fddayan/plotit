@@ -13,12 +13,6 @@ module Plotit
       filename = options[:filename] || 'out.png'
       output_path = "#{Dir.pwd}/#{filename}"
 
-
-      # collector =  Plotit::Charts::Layouts::DateNumbers.new({
-      #   output_path: output_path,
-      #   headers: options[:headers]
-      #   })
-
       collector = Plotit::Chart.new({
         output_path: output_path,
         headers: options[:headers]
@@ -30,58 +24,41 @@ module Plotit
         collector.add_line line
       end
 
-      # puts ">> HEADERS:"
-      # puts "#{collector.headers}"
-
-      # puts ">> DATA:"
-      # ap collector.data
-
       collector.plot
-
-      # collector = Plotit::Charts::Layouts::DateNumbers.new(:) #Plotit::StdinCollector.new(options)
-      # first_line = true
-      # input.each_line do |line|
-      #   # collector.set_chart_type_from_line(line) if first_line
-      #   collector.add_line line
-      #   first_line = false
-      # end
-
-      # puts "Output to #{output_path}"
-
-      # Plotit::GuffPloter.new(collector.data, output_path, options[:chart_type] ).plot
 
       `open #{output_path}`
     end
 
 
-    def groupped(lines, out, layout, formula, truncate_date, is_table = false)
+    def groupped(lines, out, options)
+      formula = options[:formula] || :count
+      truncate_date = options[:truncate]
+      layout = options[:layout]
+      sort_by = options[:sort]
+      is_table = options[:output_format] == 'table'
+
       g = Plotit::Groupped.new(formula: formula.to_sym, truncate_date: truncate_date)
 
       g.set_layout(layout)
 
       first_line = true
       lines.each_line do |line|
-        # collector.set_layout_from_line(line) if first_line
         g.add_line line
         first_line = false
       end
 
       g.completed
 
-      # puts [['date'] + g.headers.to_a].join("\t")
-      # g.rows.each do |row, value|
-      #   out.write "#{row}\t#{g.fixed_values(value).join("\t")}\n"
-      # end
-
       if is_table
         table = Terminal::Table.new do |t|
-          g.row_result.each do |columns|
+          g.row_result(sort_by: sort_by, sort_dir: options[:sort_dir]).each do |columns|
             t << columns
           end
         end
         out.write "#{table}"
       else
-        g.row_result.each do |columns|
+        g.row_result(sort_by: sort_by, sort_dir: options[:sort_dir]).each do |columns|
+          # puts "#{columns}"
           out.write "#{columns.join("\t")}\n" #{}"#{row}\t#{g.fixed_values(value).join("\t")}\n"
         end
       end

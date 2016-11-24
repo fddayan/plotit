@@ -10,7 +10,7 @@ module Plotit
           @formula = options[:formula].to_sym
         end
 
-        def row_result
+        def row_result(options = {})
           rows
         end
 

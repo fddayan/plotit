@@ -6,6 +6,7 @@ module Plotit
       module Pivot
 
         def build_keys(columns)
+          raise "should be implemented"
         end
 
         def inc_row(key1, key2, value = 1)
@@ -31,7 +32,7 @@ module Plotit
           headers.map { |h| values[h] || 0 }
         end
 
-        def row_result
+        def row_result(options = {})
           [].tap do |arr|
             arr << (['legend'] + headers.to_a)
             rows.map do |row, value|

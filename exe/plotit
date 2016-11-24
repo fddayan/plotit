@@ -16,10 +16,7 @@ opts = Slop.parse do |o|
   end
 end
 
-# puts "Layout is requird" ; exit unless opts[:chart].present?
-# puts "Layout is requird" ; exit unless opts[:layout].present?
-
-puts opts.to_hash
+raise "chart is requird" unless opts[:chart].present?
 
 Plotit::Cli.new().plotit(STDIN, {
   chart_type: opts[:chart].to_sym,
